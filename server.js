@@ -24,51 +24,39 @@ const postgresDB = knex({
   },
 });
 
-// A database to check if the user exists or has an account
-const database = {
-  users: [
-    {
-      id: "134",
-      name: "John",
-      email: `john@example.com`,
-      password: "cookies",
-      entries: 0, // --> To check how many times has the user submitted an image to be detected
-      joined: new Date(), // --> Provides the date of when the user joined
-    },
-    {
-      id: "444",
-      name: "Andrei",
-      email: `andreiscott@example.com`,
-      password: "bananas",
-      entries: 0,
-      joined: new Date(),
-    },
-  ],
-  login: [
-    {
-      id: "987",
-      hash: "",
-      email: "john@example.com",
-    },
-  ],
-};
-
 //Create a route to make sure everything is running properly at the root route "('/')"
 app.get("/", (req, res) => {
   res.send(database.users);
 });
 
-//Implementing a signing route and use JSON instead of .send();
+// Checking if our user exists and if so let him sign in
 app.post("/signin", (req, res) => {
-  //Check is entered user exists
-  if (
-    req.body.email === database.users[0].email &&
-    req.body.password === database.users[0].password
-  ) {
-    res.json(database.users[0]);
-  } else {
-    res.status(404).json("Error logging in");
-  }
+  //Check if entered user exists credentials match the existing ones
+  postgresDB
+    .select("email", "hash")
+    .from("login")
+    .where("email", "=", req.body.email) // Compare emails
+    .then((data) => {
+      // compare the hashes
+      const isValidPassword = bcrypt.compareSync(
+        req.body.password,
+        data[0].hash
+      );
+
+      if (isValidPassword) {
+        return postgresDB
+          .select("*")
+          .from("users")
+          .where("email", "=", req.body.email) // Compare user login email with DB existing emails
+          .then((user) => {
+            res.json(user[0]);
+          })
+          .catch((err) => res.status(400).json("Unable to find user"));
+      } else {
+        res.status(400).json("Wrong credentials");
+      }
+    })
+    .catch((err) => res.status(400).json("Wrong credentials")); // If everything fails
 });
 
 //Create register to register new users
