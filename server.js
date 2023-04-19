@@ -79,17 +79,33 @@ app.post("/register", (req, res) => {
   // Hash user password
   const hash = bcrypt.hashSync(password);
 
-  // Insert new user into the DB when registered
-  return postgresDB("users")
-    .returning("*")
-    .insert({
-      name: name,
-      email: email,
-      joined: new Date(),
-    })
-    .then((user) => {
-      // Respond with the newly created user
-      res.json(user[0]);
+  // Transactions
+  postgresDB
+    .transaction((trx) => {
+      trx
+        .insert({
+          hash: hash,
+          email: email,
+        })
+        .into("login")
+        .returning("email") // Returns added email
+        .then((loginEmail) => {
+          // Insert new user into the DB when registered
+          // And return the info as part of the transaction
+          return trx("users")
+            .returning("*")
+            .insert({
+              name: name,
+              email: loginEmail[0].email,
+              joined: new Date(),
+            })
+            .then((user) => {
+              // Respond with the newly created user
+              res.json(user[0]);
+            });
+        })
+        .them(trx.commit) // Make sure it's committed
+        .then(trx.rollback);
     })
     .catch((err) => res.status(400).json("Unable to Register"));
 });
