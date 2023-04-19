@@ -2,6 +2,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt-nodejs");
 const cors = require("cors");
+const knex = require("knex");
 //Create our app by running express
 const app = express();
 
@@ -12,13 +13,13 @@ app.use(express.json());
 app.use(cors());
 
 // Using Knex
-const knex = require("knex")({
+const postgresDB = knex({
   client: "pg",
   connection: {
     host: "127.0.0.1",
     port: 5432,
     user: "postgres",
-    password: "",
+    password: "root",
     database: "smart-brain",
   },
 });
@@ -74,18 +75,14 @@ app.post("/signin", (req, res) => {
 app.post("/register", (req, res) => {
   //Get what we need from the body using destructuring
   const { email, name, password } = req.body;
-  // bcrypt for handling passwords
-  bcrypt.hash(password, null, null, function (err, hash) {
-    // Store hash in your password DB.
-    console.log(hash);
-  });
-  database.users.push({
-    id: "555",
-    name: name,
-    email: email,
-    entries: 0,
-    joined: new Date(),
-  });
+  // Insert new user into the DB when registered
+  postgresDB("users")
+    .insert({
+      name: name,
+      email: email,
+      joined: new Date(),
+    })
+    .then(console.log);
   // Give a response/return to postman: In our case the newly created USER
   res.json(database.users[database.users.length - 1]);
 });
