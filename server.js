@@ -75,8 +75,12 @@ app.post("/signin", (req, res) => {
 app.post("/register", (req, res) => {
   //Get what we need from the body using destructuring
   const { email, name, password } = req.body;
+
+  // Hash user password
+  const hash = bcrypt.hashSync(password);
+
   // Insert new user into the DB when registered
-  postgresDB("users")
+  return postgresDB("users")
     .returning("*")
     .insert({
       name: name,
