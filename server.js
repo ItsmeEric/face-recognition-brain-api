@@ -8,6 +8,21 @@ const app = express();
 //Use a middleware to parse our body code into JSON
 app.use(express.json());
 
+// Use middleware to display backend data
+app.use(cors());
+
+// Using Knex
+const knex = require("knex")({
+  client: "pg",
+  connection: {
+    host: "127.0.0.1",
+    port: 5432,
+    user: "postgres",
+    password: "",
+    database: "smart-brain",
+  },
+});
+
 // A database to check if the user exists or has an account
 const database = {
   users: [
@@ -36,9 +51,6 @@ const database = {
     },
   ],
 };
-
-// Use middleware to display backend data
-app.use(cors());
 
 //Create a route to make sure everything is running properly at the root route "('/')"
 app.get("/", (req, res) => {
