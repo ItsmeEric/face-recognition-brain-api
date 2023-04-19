@@ -77,30 +77,36 @@ app.post("/register", (req, res) => {
   const { email, name, password } = req.body;
   // Insert new user into the DB when registered
   postgresDB("users")
-    .returning('*')
+    .returning("*")
     .insert({
       name: name,
       email: email,
       joined: new Date(),
     })
-    .then(user => {
+    .then((user) => {
       // Respond with the newly created user
-      res.json(user[0])
+      res.json(user[0]);
     })
-    .catch(err => res.status(400).json('Unable to Register'));
+    .catch((err) => res.status(400).json("Unable to Register"));
 });
 
 //Getting the user by using id
 app.get("/profile/:id", (req, res) => {
   const { id } = req.params;
-  let found = false;
-  database.users.forEach((user) => {
-    if (user.id === id) {
-      found = true;
-      return res.json(user);
-    }
-  });
-  if (!found) return res.status(404).json("No such user");
+  postgresDB
+    .select("*")
+    .from("users")
+    .where({ id })
+    .then((user) => {
+      if (user.length) {
+        res.json(user[0]);
+      } else {
+        res.status(400).json("Not Found");
+      }
+    })
+    .catch((err) => {
+      res.status(400).json("Error getting user");
+    });
 });
 
 //Increasing users entries
