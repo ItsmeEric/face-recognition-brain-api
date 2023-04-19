@@ -77,14 +77,17 @@ app.post("/register", (req, res) => {
   const { email, name, password } = req.body;
   // Insert new user into the DB when registered
   postgresDB("users")
+    .returning('*')
     .insert({
       name: name,
       email: email,
       joined: new Date(),
     })
-    .then(console.log);
-  // Give a response/return to postman: In our case the newly created USER
-  res.json(database.users[database.users.length - 1]);
+    .then(user => {
+      // Respond with the newly created user
+      res.json(user[0])
+    })
+    .catch(err => res.status(400).json('Unable to Register'));
 });
 
 //Getting the user by using id
