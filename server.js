@@ -26,7 +26,7 @@ const postgresDB = knex({
 
 //Create a route to make sure everything is running properly at the root route "('/')"
 app.get("/", (req, res) => {
-  res.send(database.users);
+  res.send("Everything is running totally fine");
 });
 
 // Checking if our user exists and if so let him sign in
