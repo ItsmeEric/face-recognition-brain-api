@@ -7,6 +7,7 @@ const knex = require("knex");
 // Import controllers
 const register = require("./controllers/register");
 const signin = require("./controllers/signin");
+const profile = require("./controllers/profile");
 
 //Create our app by running express
 const app = express();
@@ -46,21 +47,7 @@ app.post("/register", (req, res) => {
 
 //Getting the user by using id
 app.get("/profile/:id", (req, res) => {
-  const { id } = req.params;
-  postgresDB
-    .select("*")
-    .from("users")
-    .where({ id })
-    .then((user) => {
-      if (user.length) {
-        res.json(user[0]);
-      } else {
-        res.status(400).json("Not Found");
-      }
-    })
-    .catch((err) => {
-      res.status(400).json("Error getting user");
-    });
+  profile.handleProfileGet(req, res, postgresDB);
 });
 
 // Incrementing users entries
