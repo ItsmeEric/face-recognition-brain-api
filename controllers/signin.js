@@ -1,4 +1,4 @@
-const handleSignin = (req, res, postgresDB, bcrypt) => {
+const handleSignin = (postgresDB, bcrypt) => (req, res) => {
   //Check if entered user exists credentials match the existing ones
   postgresDB
     .select("email", "hash")

@@ -1,4 +1,4 @@
-const handleRegister = (req, res, postgresDB, bcrypt) => {
+const handleRegister = (postgresDB, bcrypt) => (req, res) => {
   //Get what we need from the body using destructuring
   const { email, name, password } = req.body;
 

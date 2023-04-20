@@ -36,14 +36,10 @@ app.get("/", (req, res) => {
 });
 
 // Checking if our user exists and if so let him sign in
-app.post("/signin", (req, res) => {
-  signin.handleSignin(req, res, postgresDB, bcrypt);
-});
+app.post("/signin", signin.handleSignin(postgresDB, bcrypt)(req, res));
 
 //Create register to register new users
-app.post("/register", (req, res) => {
-  register.handleRegister(req, res, postgresDB, bcrypt);
-});
+app.post("/register", register.handleRegister(postgresDB, bcrypt)(req, res));
 
 //Getting the user by using id
 app.get("/profile/:id", (req, res) => {
@@ -52,7 +48,7 @@ app.get("/profile/:id", (req, res) => {
 
 // Incrementing users entries
 app.put("/image", (req, res) => {
-  image.handleImagePut(req, res);
+  image.handleImagePut(req, res, postgresDB);
 });
 
 //Give our app a port to run in
