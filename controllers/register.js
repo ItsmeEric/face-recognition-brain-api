@@ -2,6 +2,11 @@ const handleRegister = (postgresDB, bcrypt) => (req, res) => {
   //Get what we need from the body using destructuring
   const { email, name, password } = req.body;
 
+  // Form Validation
+  if (!email || !name || !password) {
+    return res.status(400).json("Incorrect form submission");
+  }
+
   // Hash user password
   const hash = bcrypt.hashSync(password);
 
