@@ -1,3 +1,8 @@
+//Credentials to clarifai api key access
+const clarifai = require("clarifai");
+
+const handleApiCall = (req, res) => {};
+
 const handleImagePut = (req, res, postgresDB) => {
   const { id } = req.body;
   postgresDB("users")
@@ -12,4 +17,5 @@ const handleImagePut = (req, res, postgresDB) => {
 
 module.exports = {
   handleImagePut,
+  handleApiCall,
 };
