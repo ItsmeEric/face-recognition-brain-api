@@ -1,4 +1,4 @@
-const handleSignin = (postgresDB, bcrypt) => (req, res) => {
+const handleSignin = (req, res, postgresDB, bcrypt) => {
   const { email, password } = req.body;
 
   // Form Validation
