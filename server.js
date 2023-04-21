@@ -13,7 +13,7 @@ const image = require("./controllers/image");
 const app = express();
 
 //Use a middleware to parse our body code into JSON
-app.use(express.urlencoded({ extended: false }));
+// app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Use middleware to display backend data
