@@ -13,6 +13,7 @@ const image = require("./controllers/image");
 const app = express();
 
 //Use a middleware to parse our body code into JSON
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Use middleware to display backend data
@@ -55,6 +56,9 @@ app.get("/profile/:id", (req, res) => {
 // Incrementing users entries
 app.put("/image", (req, res) => {
   image.handleImagePut(req, res, postgresDB);
+});
+app.post("/imageurl", (req, res) => {
+  image.handleApiCallPost(req, res);
 });
 
 //Give our app a port to run in
