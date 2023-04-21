@@ -45,7 +45,7 @@ app.post("/signin", (req, res) => {
 
 //Create register to register new users
 app.post("/register", (req, res) => {
-  register.handleRegister(postgresDB, bcrypt)(req, res);
+  register.handleRegister(req, res, postgresDB, bcrypt);
 });
 
 //Getting the user by using id
