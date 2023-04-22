@@ -35,8 +35,8 @@ const handleRegister = (req, res, postgresDB, bcrypt) => {
               res.json(user[0]);
             });
         })
-        .them(trx.commit) // Make sure it's committed
-        .then(trx.rollback);
+        .then(trx.commit) // Make sure it's committed
+        .catch(trx.rollback);
     })
     .catch((err) => res.status(400).json("Unable to Register"));
 };
