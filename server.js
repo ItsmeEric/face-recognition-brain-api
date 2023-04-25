@@ -2,7 +2,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt-nodejs");
 const cors = require("cors");
-const knex = require("knex", "knexfile.js");
+const knex = require("knex");
 
 // Import controllers
 const register = require("./controllers/register");

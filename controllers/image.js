@@ -7,7 +7,7 @@ const { ClarifaiStub, grpc } = require("clarifai-nodejs-grpc");
 const API_KEY = "065c7652ac0a42f4930321614d877ae6";
 // const USER_ID = "itsmeeric";
 // const APP_ID = "my-first-application";
-const MODEL_ID = "a403429f2ddf4b49b307e318f00e528b";
+const MODEL_ID = "face-detection"; //"a403429f2ddf4b49b307e318f00e528b";
 const stub = ClarifaiStub.grpc();
 
 const metadata = new grpc.Metadata();
