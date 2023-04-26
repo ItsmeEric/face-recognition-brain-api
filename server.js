@@ -17,18 +17,13 @@ const app = express();
 app.use(express.json());
 
 // Use middleware to display backend data
-app.use(
-  cors({
-    origin: "https://smart-brain-xwi8.onrender.com",
-  })
-);
+app.use(cors());
 
 // Using Knex
 const postgresDB = knex({
   client: "pg",
   connection: {
     connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
     host: process.env.DATABASE_HOST,
     port: 5432,
     user: process.env.DATABASE_USER,
@@ -69,8 +64,8 @@ app.post("/imageurl", (req, res) => {
 });
 
 //Give our app a port to run in
-app.listen(3000, () => {
-  console.log("App is running on port 3000");
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`App is running on port ${process.env.PORT}`);
 });
 
 /*
