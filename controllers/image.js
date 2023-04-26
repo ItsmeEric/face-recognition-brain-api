@@ -1,13 +1,12 @@
 const { ClarifaiStub, grpc } = require("clarifai-nodejs-grpc");
 
-const API_KEY = "065c7652ac0a42f4930321614d877ae6";
 // const USER_ID = "itsmeeric";
 // const APP_ID = "my-first-application";
-const MODEL_ID = "face-detection"; //"a403429f2ddf4b49b307e318f00e528b";
+const MODEL_ID = "face-detection";
 const stub = ClarifaiStub.grpc();
 
 const metadata = new grpc.Metadata();
-metadata.set("authorization", "Key" + " " + API_KEY);
+metadata.set("authorization", "Key" + " " + process.env.API_CLARIFAI_KEY);
 
 // Predict concept in an image
 const handleApiCallPost = (req, res) => {
