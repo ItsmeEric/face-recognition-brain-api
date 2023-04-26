@@ -17,7 +17,11 @@ const app = express();
 app.use(express.json());
 
 // Use middleware to display backend data
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://smart-brain-xwi8.onrender.com",
+  })
+);
 
 // Using Knex
 const postgresDB = knex({
@@ -45,6 +49,7 @@ app.post("/signin", (req, res) => {
 //Optional
 // app.post("/signin", signin.handleSignin(postgresDB, bcrypt));
 
+//
 //Create register to register new users
 app.post("/register", (req, res) => {
   register.handleRegister(req, res, postgresDB, bcrypt);
