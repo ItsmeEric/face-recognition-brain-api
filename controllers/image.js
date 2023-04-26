@@ -1,9 +1,5 @@
 const { ClarifaiStub, grpc } = require("clarifai-nodejs-grpc");
 
-// Trick to check for model Id.
-// const clarifai = require("clarifai");
-// console.log(clarifai);
-
 const API_KEY = "065c7652ac0a42f4930321614d877ae6";
 // const USER_ID = "itsmeeric";
 // const APP_ID = "my-first-application";
@@ -17,7 +13,6 @@ metadata.set("authorization", "Key" + " " + API_KEY);
 const handleApiCallPost = (req, res) => {
   stub.PostModelOutputs(
     {
-      // This is the model ID of a publicly available General model. You may use any other public or custom model ID.
       model_id: MODEL_ID,
       inputs: [{ data: { image: { url: req.body.input } } }],
     },

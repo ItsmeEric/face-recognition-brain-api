@@ -18,7 +18,7 @@ const handleSignin = (req, res, postgresDB, bcrypt) => {
         return postgresDB
           .select("*")
           .from("users")
-          .where("email", "=", email) // Compare user login email with DB existing emails
+          .where("email", "=", email)
           .then((user) => {
             res.json(user[0]);
           })
@@ -27,7 +27,7 @@ const handleSignin = (req, res, postgresDB, bcrypt) => {
         res.status(400).json("Wrong credentials");
       }
     })
-    .catch((err) => res.status(400).json("Wrong credentials")); // If everything fails
+    .catch((err) => res.status(400).json("Wrong credentials"));
 };
 
 module.exports = {
